@@ -1,3 +1,16 @@
+html, body {
+  height: 100%;
+}
+
 .header i {
   font-size: 2em;
+}
+
+.container.main {
+  margin-top: 5em;
+}
+
+img {
+  width: 50%;
+  height: 70%;
 }

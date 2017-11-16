@@ -60,6 +60,23 @@ app.get("/blogs", function(req, res) {
     });
 });
 
+// 2. new
+app.get("/blogs/new", function(req, res) {
+    res.render("new");
+});
+
+// 3. create
+app.post("/blogs", function(req, res) {
+    // create new blog
+    blogModel.create(req.body.blog, function(err, newBlog) {
+        if(err) {
+            console.log("Jedi");
+        } else {
+            res.redirect("/blogs");
+        }
+    });
+});
+
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("Server started!");
 });
