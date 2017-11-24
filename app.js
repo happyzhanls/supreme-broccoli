@@ -20,17 +20,9 @@ var blogModel = mongoose.model("blog", {
 });
 
 // var blogArray = [{
-//     title: "Trocadero, Paris, France",
-//     image: "https://images.unsplash.com/photo-1485199433301-8b7102e86995?auto=format&fit=crop&w=1080&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D",
-//     body: "It is my favourite place in Paris and when I stay in Italy during my usually life I dream to be there in front of my favourite monument: the eiffel tower!I taken 2 bus and one metro and at 5:10 I was arrived in this wonderful place. Was very cold, but I dont stayed only!"
-// }, {
-//     title: "Limassol, Cyprus",
-//     image: "https://images.unsplash.com/photo-1504185945330-7a3ca1380535?auto=format&fit=crop&w=1221&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D",
-//     body: "Making your own buns, always results in a better burger. Perfection takes time, practice and hard work, but at the end it always pays off. In this case, the time was the work invested into the making of the burger and the pay off was this luscious burger."
-// }, {
-//     title: "Corno Nero, Italy",
-//     image: "https://images.unsplash.com/photo-1437422061949-f6efbde0a471?auto=format&fit=crop&w=1050&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D",
-//     body: "No description provided but the beautiful picture"
+//     title: "South Salt Lake, United States",
+//     image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1950&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D",
+//     body: "This home is geothermal, super efficient, and modern. It is also available to book on Airbnb in the Salt Lake City area."
 // }];
 
 // blogModel.create(blogArray, function(err) {
@@ -73,6 +65,19 @@ app.post("/blogs", function(req, res) {
             console.log("Jedi");
         } else {
             res.redirect("/blogs");
+        }
+    });
+});
+
+// 4. show
+app.get("/blogs/:id", function(req, res) {
+    blogModel.findById(req.params.id, function(err, foundBlog) {
+        if(err) {
+            console.log("Templater");
+        } else {
+            res.render("show", {
+                blog: foundBlog
+            });
         }
     });
 });

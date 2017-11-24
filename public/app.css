@@ -1,16 +1,12 @@
-html, body {
-  height: 100%;
-}
-
+/* Make the </> icon larger to see! */
 .header i {
-  font-size: 2em;
+  font-size: 1.5em;
+}
+/* Add top margin to container so that it's not blocked by the menu */
+.justified.container {
+  margin-top: 5em;
 }
 
 .container.main {
   margin-top: 5em;
-}
-
-img {
-  width: 50%;
-  height: 70%;
 }

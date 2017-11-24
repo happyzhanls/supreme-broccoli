@@ -1,0 +1,14 @@
+<% include partials/header %>
+
+<div class="ui justified container">
+  <div class="ui header">
+    <span><%= blog.title %></span>
+    <span style="float: right; font-size: 0.7em">by <%= blog.created.toDateString() %></span>
+  </div>
+  <div class="ui horizontal divider">
+    Description
+  </div>
+  <img class="ui medium left floated image" src=<%= blog.image %>>
+  <p><%= blog.body %></p>    
+</div>
+<% include partials/footer %>
