@@ -1,1 +1,1 @@
-# I'm a blog app prototype!
+# I'm a blog app project on cloud9!
