@@ -1,6 +1,8 @@
 var bodyParser = require("body-parser"),
     methodOverride = require("method-override"),
     // ↑_Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
+    expressSanitizer = require("express-sanitizer"),
+    // ↑_An express middleware for Caja-HTML-Sanitizer, which wraps Google Caja sanitizer.
     mongoose = require("mongoose"),
     express = require("express"),
     app = express();
@@ -10,6 +12,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(expressSanitizer());
 
 // title    
 // image
@@ -62,6 +65,7 @@ app.get("/blogs/new", function(req, res) {
 
 // 3. Create Route
 app.post("/blogs", function(req, res) {
+    req.body.blog.body = expressSanitizer(req.body.blog.body);
     // create new blog
     blogModel.create(req.body.blog, function(err, newBlog) {
         if(err) {
