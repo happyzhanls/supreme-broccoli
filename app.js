@@ -1,4 +1,6 @@
 var bodyParser = require("body-parser"),
+    methodOverride = require("method-override"),
+    // ↑_Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
     mongoose = require("mongoose"),
     express = require("express"),
     app = express();
@@ -7,6 +9,7 @@ mongoose.connect('mongodb://localhost/blog_app', { useMongoClient: true });
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 // title    
 // image
@@ -41,39 +44,39 @@ app.get("/", function(req, res) {
     res.redirect("/blogs");
 });
 
-// 1. index
+// 1. Index Route
 app.get("/blogs", function(req, res) {
     blogModel.find({}, function(err, blogs) {
         if(err) {
-            console.log("Error!");
+            console.log("Error in the Index Route!");
         } else {
             res.render("index", {blogs: blogs});
         }
     });
 });
 
-// 2. new
+// 2. New Route
 app.get("/blogs/new", function(req, res) {
     res.render("new");
 });
 
-// 3. create
+// 3. Create Route
 app.post("/blogs", function(req, res) {
     // create new blog
     blogModel.create(req.body.blog, function(err, newBlog) {
         if(err) {
-            console.log("Jedi");
+            console.log("Error in the Create Route");
         } else {
             res.redirect("/blogs");
         }
     });
 });
 
-// 4. show
+// 4. Show Route
 app.get("/blogs/:id", function(req, res) {
     blogModel.findById(req.params.id, function(err, foundBlog) {
         if(err) {
-            console.log("Templater");
+            console.log("Error in the Show Soute!");
         } else {
             res.render("show", {
                 blog: foundBlog
@@ -81,6 +84,46 @@ app.get("/blogs/:id", function(req, res) {
         }
     });
 });
+
+// 5. Edit Route
+app.get("/blogs/:id/edit", function(req, res) {
+    blogModel.findById(req.params.id, function(err, foundBlog) {
+        if(err) {
+            console.log("Error in the Edit Route");
+        } else {
+            res.render("edit", {
+                blog: foundBlog
+            });
+        }
+    });
+});
+
+// 6. Update Route
+app.put("/blogs/:id", function(req, res) {
+    blogModel.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
+        if(err) {
+            console.log("Error in the Update Route");
+            res.redirect("/blogs");
+        } else {
+            console.log("Edit  successfully");
+            res.redirect("/blogs/" + req.params.id);
+        }
+    });
+});
+
+// 7. Destroy Route
+app.delete("/blogs/:id", function(req, res) {
+    blogModel.findByIdAndRemove(req.params.id, function(err) {
+        if(err) {
+            console.log("Error in the Destroy Route");
+            res.redirect("/blogs");
+        } else {
+            console.log("Remove successfully");
+            res.redirect("/blogs");
+        }
+    });
+});
+
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("Server started!");

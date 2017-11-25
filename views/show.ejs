@@ -9,6 +9,14 @@
     Description
   </div>
   <img class="ui medium left floated image" src=<%= blog.image %>>
-  <p><%= blog.body %></p>    
+  <p><%= blog.body %></p>
+  <form action="/blogs/<%= blog.id %>?_method=delete" method="post">
+    <button class="ui right floated negative button">
+      Delete
+    </button>    
+  </form>
+  <button class="ui right floated positive button">
+    <a href="/blogs/<%= blog.id %>/edit">Edit</a>
+  </button>
 </div>
 <% include partials/footer %>
