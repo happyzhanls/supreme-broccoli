@@ -105,7 +105,7 @@ app.put("/blogs/:id", function(req, res) {
             console.log("Error in the Update Route");
             res.redirect("/blogs");
         } else {
-            console.log("Edit  successfully");
+            console.log("Edit successfully");
             res.redirect("/blogs/" + req.params.id);
         }
     });
@@ -123,7 +123,6 @@ app.delete("/blogs/:id", function(req, res) {
         }
     });
 });
-
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("Server started!");
