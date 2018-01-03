@@ -7,8 +7,8 @@ var bodyParser = require("body-parser"),
     express = require("express"),
     app = express();
     
-// mongoose.connect('mongodb://localhost/blog_app', { useMongoClient: true });
-mongoose.connect('mongodb://admin:password@ds135757.mlab.com:35757/blog-app-x', { useMongoClient: true });
+var DATABASEURL = process.env.DATABASEURL || "mongodb://localhost/blog_app";
+mongoose.connect(DATABASEURL, { useMongoClient: true });
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -66,8 +66,7 @@ app.get("/blogs/new", function(req, res) {
 });
 
 // 3. Create Route
-app.post("/blogs", function(req, res) {
-    req.body.blog.body = expressSanitizer(req.body.blog.body);
+app.post("/blogs", sanitizeBlog, function(req, res) {
     // create new blog
     blogModel.create(req.body.blog, function(err, newBlog) {
         if(err) {
@@ -105,13 +104,12 @@ app.get("/blogs/:id/edit", function(req, res) {
 });
 
 // 6. Update Route
-app.put("/blogs/:id", function(req, res) {
+app.put("/blogs/:id", sanitizeBlog, function(req, res) {
     blogModel.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
         if(err) {
             console.log("Error in the Update Route");
             res.redirect("/blogs");
         } else {
-            console.log("Edit successfully");
             res.redirect("/blogs/" + req.params.id);
         }
     });
@@ -124,11 +122,15 @@ app.delete("/blogs/:id", function(req, res) {
             console.log("Error in the Destroy Route");
             res.redirect("/blogs");
         } else {
-            console.log("Remove successfully");
             res.redirect("/blogs");
         }
     });
 });
+
+function sanitizeBlog(req, res, next) {
+    req.body.blog.body = req.sanitize(req.body.blog.body);
+    next();
+}
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("Server started!");
